@@ -8,7 +8,7 @@ using System.Net.Http;
 
 namespace ClientApps.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -20,7 +20,8 @@ namespace ClientApps.Controllers
         public IActionResult Index()
         {
             var generateToken = JsonDataHelper.GenerateTokenJsonDataPost(jsonData: JsonConvert.SerializeObject(new { userName = "test", password = "test" }), url: "https://localhost:44382/gateway/users/authenticate");
-            //var jsonResponse = JsonDataHelper.JsonDataPost(jsonData: jsonData, fToken: tokenInfo.f_token, aToken: tokenInfo.access_token, url: ababilWebServiceUrl + "/ababil-customer/api/customers/individuals");
+
+            var jsonResponse = JsonDataHelper.GetJsonData(url: "https://localhost:44382/gateway/users/getall", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYmYiOjE2MzY4ODI4NDUsImV4cCI6MTYzNjg4Mzc0NSwiaWF0IjoxNjM2ODgyODQ1fQ.6GZp7nmMbLt1TGP_svCF8S9ibgVengpY9bfZKO-UKRo");
 
             HttpClient client = new HttpClient();
 

@@ -30,6 +30,25 @@ namespace ClientApps
             return result;
         }
 
+        internal static string GetJsonData(string url, string token)
+        {
+            var result = string.Empty;
+            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpRequest.Method = "GET";
+            httpRequest.ContentType = "application/json";
+            httpRequest.Accept = "application/json";
+            httpRequest.Headers.Add("Authorization", $"Bearer {token}");
+
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                result = streamReader.ReadToEnd();
+            }
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+                return result;
+            return result;
+        }
+
         public static string GenerateTokenJsonDataPost(string jsonData, string url)
         {
             string responseResult = string.Empty;

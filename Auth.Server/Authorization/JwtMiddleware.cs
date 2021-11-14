@@ -27,7 +27,6 @@ namespace Auth.Server.Controllers
                 // attach user to context on successful jwt validation
                 context.Items["User"] = userService.GetById(userId.Value);
             }
-
             await _next(context);
         }
     }
