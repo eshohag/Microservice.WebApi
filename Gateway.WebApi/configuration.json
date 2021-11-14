@@ -47,6 +47,18 @@
       ],
       "UpstreamPathTemplate": "/gateway/customer/{id}",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/authenticate",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44398
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/users/authenticate",
+      "UpstreamHttpMethod": [ "POST" ]
     }
   ],
   "GlobalConfiguration": {
