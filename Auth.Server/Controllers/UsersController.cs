@@ -8,7 +8,7 @@ namespace Auth.Server.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
@@ -28,13 +28,20 @@ namespace Auth.Server.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("refresh-token")]
+        [HttpPost("refresh-tokens")]
         public IActionResult RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"];
             var response = _userService.RefreshToken(refreshToken, ipAddress());
             setTokenCookie(response.RefreshToken);
             return Ok(response);
+        }
+
+        [HttpGet("refresh-tokens/{id}")]
+        public IActionResult GetRefreshTokens(int id)
+        {
+            var user = _userService.GetById(id);
+            return Ok(user.RefreshTokens);
         }
 
         [HttpPost("revoke-token")]
@@ -50,25 +57,18 @@ namespace Auth.Server.Controllers
             return Ok(new { message = "Token revoked" });
         }
 
-        [HttpGet]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
             return Ok(users);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getbyid/{id}")]
         public IActionResult GetById(int id)
         {
             var user = _userService.GetById(id);
             return Ok(user);
-        }
-
-        [HttpGet("{id}/refresh-tokens")]
-        public IActionResult GetRefreshTokens(int id)
-        {
-            var user = _userService.GetById(id);
-            return Ok(user.RefreshTokens);
         }
 
         // helper methods
