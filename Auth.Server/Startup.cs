@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -46,9 +47,27 @@ namespace Auth.Server
             services.AddScoped<IJwtUtils, JwtUtils>();
             services.AddScoped<IUserService, UserService>();
 
+            //Optional For Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth.Server", Version = "v1" });
+                c.SwaggerDoc("V1", new OpenApiInfo
+                {
+                    Title = "Auth.Server",
+                    Version = "V1",
+                    Description = "Api Description",
+                    TermsOfService = new Uri("https://rashik.com.np"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Company Name",
+                        Email = "info@email.com",
+                        Url = new Uri("https://rashik.com.np"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "ORM Implementation License",
+                        Url = new Uri("https://rashik.com.np"),
+                    }
+                });
             });
         }
 
@@ -61,8 +80,13 @@ namespace Auth.Server
                     CreateTestUser(context);
 
                 app.UseDeveloperExceptionPage();
+
+                //Optional For Swagger
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auth.Server v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/V1/swagger.json", "Auth.Server v1");
+                });
             }
 
             app.UseRouting();
