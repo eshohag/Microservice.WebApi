@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Http;
 
 namespace ClientApps.Controllers
 {
@@ -17,23 +20,27 @@ namespace ClientApps.Controllers
 
         public IActionResult Index()
         {
-            var generateToken = JsonDataHelper.GenerateTokenJsonDataPost(jsonData: JsonConvert.SerializeObject(new { userName = "test", password = "test" }), url: "https://localhost:44382/gateway/users/authenticate");
+            var authenticateUserInfo = JsonConvert.DeserializeObject<AuthenticateResponse>(JsonDataHelper.GenerateTokenJsonDataPost(jsonData: JsonConvert.SerializeObject(new { userName = "test", password = "test" }), url: "https://localhost:44382/gateway/users/authenticate"));
 
-            //var jsonResponse = JsonDataHelper.GetJsonData(url: "https://localhost:44382/gateway/users/getall", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYmYiOjE2MzY4ODI4NDUsImV4cCI6MTYzNjg4Mzc0NSwiaWF0IjoxNjM2ODgyODQ1fQ.6GZp7nmMbLt1TGP_svCF8S9ibgVengpY9bfZKO-UKRo");
-
-            //HttpClient client = new HttpClient();
-
-            //client.DefaultRequestHeaders.Clear();
-            //client.BaseAddress = new Uri("http://localhost:9000");
-            //var jwt = "";
-            //client.DefaultRequestHeaders.Add("Authorization", $"Bearer {jwt}");
+            var jsonResponse = JsonDataHelper.GetJsonData(url: "https://localhost:44382/gateway/users/getall", token: authenticateUserInfo.JwtToken);
+            var customers = JsonDataHelper.GetJsonData(url: "https://localhost:44382/gateway/customers/getall", token: authenticateUserInfo.JwtToken);
 
 
-            //var usersResponse = client.GetAsync("/customers").Result;
-            //var users = usersResponse.Content.ReadAsStringAsync().Result;
 
-            //var res = client.GetAsync("/customers/1").Result;
-            //var responseResultFor = res.Content.ReadAsStringAsync().Result;
+
+
+
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Clear();
+            client.BaseAddress = new Uri("http://localhost:44382/");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer { authenticateUserInfo.JwtToken}");
+
+            var usersResponse = client.GetAsync("/gateway/customer").Result;
+            var users = usersResponse.Content.ReadAsStringAsync().Result;
+
+            var res = client.GetAsync("/gateway/customers/1").Result;
+            var responseResultFor = res.Content.ReadAsStringAsync().Result;
 
             return View();
         }
