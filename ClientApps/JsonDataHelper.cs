@@ -1,79 +1,49 @@
-﻿using System.IO;
+﻿using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Net;
 
 namespace ClientApps
 {
     public static class JsonDataHelper
     {
-        public static string JsonDataPost(string jsonData, string fToken, string aToken, string url)
+        public static string GetJsonResponseData(dynamic model, string url, string method, string token = "", string fToken = "")
         {
-            var result = string.Empty;
-            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpRequest.Method = "POST";
-            httpRequest.ContentType = "application/json";
-            httpRequest.Accept = "application/json";
-            httpRequest.Headers.Add("Authorization", $"Bearer {aToken}");
-            httpRequest.Headers.Add("F-TOKEN", $"{fToken}");
-
-            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            try
             {
-                streamWriter.Write(jsonData);
-            }
+                var result = string.Empty;
+                var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+                httpRequest.Method = method;
+                httpRequest.ContentType = "application/json";
+                httpRequest.Accept = "application/json";
 
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                result = streamReader.ReadToEnd();
-            }
-            if (httpResponse.StatusCode == HttpStatusCode.OK)
+                if (!String.IsNullOrWhiteSpace(token))
+                    httpRequest.Headers.Add("Authorization", $"Bearer {token}");
+                if (!String.IsNullOrWhiteSpace(fToken))
+                    httpRequest.Headers.Add("F-TOKEN", $"{fToken}");
+
+                if (model != null)
+                {
+                    using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+                    {
+                        var data = JsonConvert.SerializeObject(model);
+                        streamWriter.Write(data);
+                    }
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    result = streamReader.ReadToEnd();
+                }
+                if (httpResponse.StatusCode == HttpStatusCode.OK)
+                    return result;
                 return result;
-            return result;
-        }
-
-        internal static string GetJsonData(string url, string token)
-        {
-            var result = string.Empty;
-            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpRequest.Method = "GET";
-            httpRequest.ContentType = "application/json";
-            httpRequest.Accept = "application/json";
-            httpRequest.Headers.Add("Authorization", $"Bearer {token}");
-
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                result = streamReader.ReadToEnd();
             }
-            if (httpResponse.StatusCode == HttpStatusCode.OK)
-                return result;
-            return result;
-        }
-
-        public static string GenerateTokenJsonDataPost(string jsonData, string url)
-        {
-            string responseResult = string.Empty;
-            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpRequest.Method = "POST";
-            httpRequest.ContentType = "application/json";
-            httpRequest.Accept = "application/json";
-            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            catch (Exception ex)
             {
-                streamWriter.Write(jsonData);
-                streamWriter.Close();
+                return null;
             }
-
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                responseResult = streamReader.ReadToEnd();
-            }
-            if (httpResponse.StatusCode == HttpStatusCode.OK)
-            {
-                //var ftoken = httpResponse.Headers["F-TOKEN"];
-                //return new KeyValuePair<string, string>(ftoken, responseResult);
-                return responseResult;
-            }
-            return responseResult;
         }
     }
 }
