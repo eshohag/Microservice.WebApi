@@ -29,6 +29,8 @@ namespace Gateway.WebApi
             if (tokenInformation != null)
             {
                 var token = tokenInformation.FirstOrDefault().Split(" ").Last();
+
+
             }
 
             //do stuff and optionally call the base handler..
