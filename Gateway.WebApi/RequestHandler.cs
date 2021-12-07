@@ -21,11 +21,14 @@ namespace Gateway.WebApi
             Trace.WriteLine(requestUrl);
 
             request.Headers.TryGetValues("Authorization", out var tokenInformation);
-            var token = tokenInformation.FirstOrDefault()?.Split(" ").Last();
 
-            if (token is null && !requestUrl.Contains("authenticate"))
+            if (tokenInformation is null && !requestUrl.Contains("authenticate"))
             {
                 return await ReturnBadRequest("The request could not be understood by the server.");
+            }
+            if (tokenInformation != null)
+            {
+                var token = tokenInformation.FirstOrDefault().Split(" ").Last();
             }
 
             //do stuff and optionally call the base handler..
