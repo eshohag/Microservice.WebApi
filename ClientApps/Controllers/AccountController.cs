@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -29,22 +31,25 @@ namespace ClientApps.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new UserModel() { UserId = 1, Username = model.UserName, Role = "User", Password = model.Password };
+                var authResponse = JsonDataHelper.GetJsonResponseData(model: new { userName =model.UserName, password = model.Password }, url: "https://localhost:44382/gateway/users/authenticate", WebRequestMethods.Http.Post);
 
-                if (user == null)
+                if (authResponse == null)
                 {
                     //Add logic here to display some message to user
-                    ViewBag.Message = "Invalid Credential";
+                    ViewBag.Message = "Username or password is incorrect!";
                     return View(model);
                 }
                 else
                 {
+                    var user = JsonConvert.DeserializeObject<AuthenticateResponse>(authResponse);
+
                     //A claim is a statement about a subject by an issuer and
                     //represent attributes of the subject that are useful in the context of authentication and authorization operations.
                     var claims = new List<Claim>() {
-                        new Claim("UserId",Convert.ToString(user.UserId)),
+                        new Claim("UserId",Convert.ToString(user.Id)),
+                        new Claim("Token",user.JwtToken),
                         new Claim("UserName",user.Username),
-                        new Claim("Role",user.Role),
+                        new Claim("Role","Client"),
                         new Claim("Developer","Shohag")
                     };
                     //Initialize a new instance of the ClaimsIdentity with the claims and authentication scheme

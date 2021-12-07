@@ -25,6 +25,9 @@ namespace Auth.Server.Controllers
         public IActionResult Authenticate(AuthenticateRequest model)
         {
             var response = _userService.Authenticate(model, ipAddress());
+            if (response == null)
+                return null;
+
             setTokenCookie(response.RefreshToken);
             return Ok(response);
         }

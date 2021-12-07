@@ -36,25 +36,32 @@ namespace Auth.Server.Services
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress)
         {
-            var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
+            try
+            {
+                var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
 
-            // validate
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
-                throw new AppException("Username or password is incorrect");
+                // validate
+                if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+                    throw new AppException("Username or password is incorrect!");
 
-            // authentication successful so generate jwt and refresh tokens
-            var jwtToken = _jwtUtils.GenerateJwtToken(user);
-            var refreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
-            user.RefreshTokens.Add(refreshToken);
+                // authentication successful so generate jwt and refresh tokens
+                var jwtToken = _jwtUtils.GenerateJwtToken(user);
+                var refreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
+                user.RefreshTokens.Add(refreshToken);
 
-            // remove old refresh tokens from user
-            removeOldRefreshTokens(user);
+                // remove old refresh tokens from user
+                removeOldRefreshTokens(user);
 
-            // save changes to db
-            _context.Update(user);
-            _context.SaveChanges();
+                // save changes to db
+                _context.Update(user);
+                _context.SaveChanges();
 
-            return new AuthenticateResponse(user, jwtToken, refreshToken.Token);
+                return new AuthenticateResponse(user, jwtToken, refreshToken.Token);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public AuthenticateResponse RefreshToken(string token, string ipAddress)
