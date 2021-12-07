@@ -1,4 +1,5 @@
 ﻿using ClientApps.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -20,19 +21,25 @@ namespace ClientApps.Controllers
 
         public IActionResult Index()
         {
-            var authResponse = JsonDataHelper.GetJsonResponseData(model: new { userName = "test", password = "test" }, url: "https://localhost:44382/gateway/users/authenticate", WebRequestMethods.Http.Post);
-            if (authResponse == null)
-                return View();
+            //var authResponse = JsonDataHelper.GetJsonResponseData(model: new { userName = "test", password = "test" }, url: "https://localhost:44382/gateway/users/authenticate", WebRequestMethods.Http.Post);
+            //if (authResponse == null)
+            //    return View();
 
-            var authenticateUserInfo = JsonConvert.DeserializeObject<AuthenticateResponse>(authResponse);
-            var users = JsonDataHelper.GetJsonResponseData(model: null, url: "https://localhost:44382/gateway/users/getall", WebRequestMethods.Http.Get, token: authenticateUserInfo.JwtToken);
-            var customers = JsonDataHelper.GetJsonResponseData(model: null, url: "https://localhost:44382/gateway/customer", WebRequestMethods.Http.Get, token: authenticateUserInfo.JwtToken);
-            var products = JsonDataHelper.GetJsonResponseData(model: null, url: "https://localhost:44382/gateway/product", WebRequestMethods.Http.Get, token: authenticateUserInfo.JwtToken);
+            //var authenticateUserInfo = JsonConvert.DeserializeObject<AuthenticateResponse>(authResponse);
+            //var users = JsonDataHelper.GetJsonResponseData(model: null, url: "https://localhost:44382/gateway/users/getall", WebRequestMethods.Http.Get, token: authenticateUserInfo.JwtToken);
+            //var customers = JsonDataHelper.GetJsonResponseData(model: null, url: "https://localhost:44382/gateway/customer", WebRequestMethods.Http.Get, token: authenticateUserInfo.JwtToken);
+            //var products = JsonDataHelper.GetJsonResponseData(model: null, url: "https://localhost:44382/gateway/product", WebRequestMethods.Http.Get, token: authenticateUserInfo.JwtToken);
 
             return View();
         }
         [Authorize]
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Confidential()
         {
             return View();
         }
