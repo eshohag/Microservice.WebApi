@@ -73,6 +73,9 @@
       "UpstreamHttpMethod": [ "GET" ]
     }
   ],
+  "DelegatingHandlers": [
+    "RequestHandler"
+  ],
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:44382"
   }
