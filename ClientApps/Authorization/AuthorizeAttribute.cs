@@ -20,7 +20,7 @@ namespace ClientApps.Controllers
             // authorization
             var user = (UserPrincipal)context.HttpContext.Items["User"];
             if (user == null)
-                context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+                context.Result = new JsonResult(new { message = "Unauthorized Users or Invalid credientials!" }) { StatusCode = StatusCodes.Status401Unauthorized };
         }
     }
 }
