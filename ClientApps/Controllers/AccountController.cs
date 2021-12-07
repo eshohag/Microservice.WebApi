@@ -25,6 +25,11 @@ namespace ClientApps.Controllers
             model.ReturnUrl = ReturnUrl;
             return View(model);
         }
+         [HttpGet]
+        public IActionResult Denied()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
