@@ -29,7 +29,7 @@ namespace Auth.Server.Controllers
             return Ok(response);
         }
         [AllowAnonymous]
-        [HttpPost("validateJwtToken")]
+        [HttpGet("validateJwtToken")]
         public IActionResult ValidateJwtToken(string token)
         {
             var response = _jwtUtils.ValidateJwtToken(token);
