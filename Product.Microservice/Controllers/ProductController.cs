@@ -28,9 +28,9 @@ namespace Product.Microservice.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            //var customers = await _context.Products.ToListAsync();
-            //if (customers == null) return NotFound();
-            return Ok("Product Microservice executed !");
+            var products = await _context.Products.ToListAsync();
+            if (products == null) return NotFound();
+            return Ok(products);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)

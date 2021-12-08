@@ -18,12 +18,11 @@ namespace Customer.Microservice
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -48,10 +47,13 @@ namespace Customer.Microservice
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
+                if (context.Customers.Count() == 0)
+                    CreateInitialTestCustomers(context);
+
                 app.UseDeveloperExceptionPage();
             }
 
@@ -69,6 +71,18 @@ namespace Customer.Microservice
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void CreateInitialTestCustomers(ApplicationDbContext context)
+        {
+            // add hardcoded test user to db on startup
+            var customers = new List<Entities.Customer>() {
+                new Entities.Customer() { Name = "Shohag", Contact = "0192837376484", City="Dhaka", Email="shohag@gmail.com" },
+                new Entities.Customer() { Name = "Arif", Contact = "0192837376484", City="Dhaka", Email="arif@gmail.com" },
+                new Entities.Customer() { Name = "Masud", Contact = "0192837376484", City="Dhaka", Email="masud@gmail.com" }
+            };
+            context.Customers.AddRange(customers);
+            context.SaveChanges();
         }
     }
 }

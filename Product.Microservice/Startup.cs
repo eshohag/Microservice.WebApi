@@ -52,10 +52,13 @@ namespace Product.Microservice
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
+                if (context.Products.Count() == 0)
+                    CreateInitialTestProducts(context);
+
                 app.UseDeveloperExceptionPage();
             }
 
@@ -73,6 +76,16 @@ namespace Product.Microservice
             {
                 endpoints.MapControllers();
             });
+        }
+        private void CreateInitialTestProducts(ApplicationDbContext context)
+        {
+            // add hardcoded test user to db on startup
+            var products = new List<Entities.Product>() {
+                new Entities.Product() { Name = "Apple", Rate = 100 },
+                new Entities.Product() { Name = "Orange", Rate = 50 }
+            };
+            context.Products.AddRange(products);
+            context.SaveChanges();
         }
     }
 }
