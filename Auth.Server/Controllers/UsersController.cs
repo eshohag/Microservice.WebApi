@@ -12,10 +12,12 @@ namespace Auth.Server.Controllers
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
+        private readonly IJwtUtils _jwtUtils;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IJwtUtils jwtUtils)
         {
             _userService = userService;
+            _jwtUtils = jwtUtils;
         }
 
         [AllowAnonymous]
@@ -23,7 +25,17 @@ namespace Auth.Server.Controllers
         public IActionResult Authenticate(AuthenticateRequest model)
         {
             var response = _userService.Authenticate(model, ipAddress());
+            if (response == null)
+                return null;
+
             setTokenCookie(response.RefreshToken);
+            return Ok(response);
+        }
+        [AllowAnonymous]
+        [HttpGet("validateJwtToken")]
+        public IActionResult ValidateJwtToken(string token)
+        {
+            var response = _jwtUtils.ValidateJwtToken(token);
             return Ok(response);
         }
 
