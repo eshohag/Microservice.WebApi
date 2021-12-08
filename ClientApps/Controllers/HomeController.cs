@@ -26,22 +26,6 @@ namespace ClientApps.Controllers
         }
 
         [Authorize]
-        public IActionResult Customers()
-        {
-            ViewBag.Customers = JsonDataHelper.GetJsonResponseData(model: null, url: "https://localhost:44382/gateway/customer", WebRequestMethods.Http.Get, token: Settings.JwtToken);
-            //var authenticateUserInfo = JsonConvert.DeserializeObject<AuthenticateResponse>(authResponse);
-
-            return View();
-        }
-        [Authorize]
-        public IActionResult Products()
-        {
-            ViewBag.Products = JsonDataHelper.GetJsonResponseData(model: null, url: "https://localhost:44382/gateway/product", WebRequestMethods.Http.Get, token: Settings.JwtToken);
-
-            return View();
-        }
-
-        [Authorize]
         public IActionResult Confidential()
         {
             return View();
