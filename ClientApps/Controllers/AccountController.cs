@@ -25,7 +25,7 @@ namespace ClientApps.Controllers
             model.ReturnUrl = ReturnUrl;
             return View(model);
         }
-         [HttpGet]
+        [HttpGet]
         public IActionResult Denied()
         {
             return View();
@@ -36,7 +36,7 @@ namespace ClientApps.Controllers
         {
             if (ModelState.IsValid)
             {
-                var authResponse = JsonDataHelper.GetJsonResponseData(model: new { userName =model.UserName, password = model.Password }, url: "https://localhost:44382/gateway/users/authenticate", WebRequestMethods.Http.Post);
+                var authResponse = JsonDataHelper.GetJsonResponseData(model: new { userName = model.UserName, password = model.Password }, url: "https://localhost:44382/gateway/users/authenticate", WebRequestMethods.Http.Post);
 
                 if (authResponse == null)
                 {
@@ -52,8 +52,9 @@ namespace ClientApps.Controllers
                     //represent attributes of the subject that are useful in the context of authentication and authorization operations.
                     var claims = new List<Claim>() {
                         new Claim("UserId",Convert.ToString(user.Id)),
-                        new Claim("Token",user.JwtToken),
                         new Claim("UserName",user.Username),
+                        new Claim("JwtToken",user.JwtToken),
+                        new Claim("FullName",user.FirstName+" "+user.LastName),
                         new Claim("Role","Client"),
                         new Claim("Developer","Shohag")
                     };
