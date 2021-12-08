@@ -30,8 +30,11 @@ namespace Product.Microservice
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection"),
+                   //Configuration["DefaultConnection"]
+                   Configuration["ConnectionStrings:DefaultConnection"]
+                   /*Configuration.GetConnectionString("DefaultConnection")*/,
                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
             #region Swagger
             services.AddSwaggerGen(c =>
