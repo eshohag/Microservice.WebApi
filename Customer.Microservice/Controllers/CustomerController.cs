@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Customer.Microservice.Application;
+using Customer.Microservice.Domain.Models;
 using Customer.Microservice.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +16,15 @@ namespace Customer.Microservice.Controllers
     public class CustomerController : ControllerBase
     {
         private IApplicationDbContext _context;
-        public CustomerController(IApplicationDbContext context)
+        private readonly ITestManager _testManager;
+
+        public CustomerController(IApplicationDbContext context, ITestManager testManager)
         {
             _context = context;
+            _testManager = testManager;
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Entities.Customer customer)
+        public async Task<IActionResult> Create(Domain.Models.Customer customer)
         {
             _context.Customers.Add(customer);
             await _context.SaveChanges();
@@ -28,6 +33,8 @@ namespace Customer.Microservice.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            var test = _testManager.TestMessage();
+
             var customers = await _context.Customers.ToListAsync();
             if (customers == null) return NotFound();
             return Ok(customers);
@@ -49,7 +56,7 @@ namespace Customer.Microservice.Controllers
             return Ok(customer.Id);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Entities.Customer customerData)
+        public async Task<IActionResult> Update(int id, Domain.Models.Customer customerData)
         {
             var customer = _context.Customers.Where(a => a.Id == id).FirstOrDefault();
 

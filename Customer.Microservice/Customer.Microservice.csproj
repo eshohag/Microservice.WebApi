@@ -32,4 +32,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Customer.Microservice.Application\Customer.Microservice.Application.csproj" />
+    <ProjectReference Include="..\Customer.Microservice.Domain\Customer.Microservice.Domain.csproj" />
+  </ItemGroup>
 </Project>

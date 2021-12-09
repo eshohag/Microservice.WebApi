@@ -13,7 +13,7 @@ namespace Customer.Microservice.Data
             : base(options)
         {
         }
-        public DbSet<Entities.Customer> Customers{ get; set; }
+        public DbSet<Domain.Models.Customer> Customers{ get; set; }
 
         public async Task<int> SaveChanges()
         {

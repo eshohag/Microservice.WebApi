@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Customer.Microservice.Application;
+using Customer.Microservice.Application.Manager.Implementation;
+using Customer.Microservice.Application.Manager.Interfaces;
 using Customer.Microservice.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +35,9 @@ namespace Customer.Microservice
                    Configuration.GetConnectionString("DefaultConnection"),
                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+           
+            services.AddScoped<ITestManager, TestManager>();
+                   
             #region Swagger
             services.AddSwaggerGen(c =>
             {
@@ -76,10 +82,10 @@ namespace Customer.Microservice
         private void CreateInitialTestCustomers(ApplicationDbContext context)
         {
             // add hardcoded test user to db on startup
-            var customers = new List<Entities.Customer>() {
-                new Entities.Customer() { Name = "Shohag", Contact = "0192837376484", City="Dhaka", Email="shohag@gmail.com" },
-                new Entities.Customer() { Name = "Arif", Contact = "0192837376484", City="Dhaka", Email="arif@gmail.com" },
-                new Entities.Customer() { Name = "Masud", Contact = "0192837376484", City="Dhaka", Email="masud@gmail.com" }
+            var customers = new List<Domain.Models.Customer>() {
+                new Domain.Models.Customer() { Name = "Shohag", Contact = "0192837376484", City="Dhaka", Email="shohag@gmail.com" },
+                new Domain.Models.Customer() { Name = "Arif", Contact = "0192837376484", City="Dhaka", Email="arif@gmail.com" },
+                new Domain.Models.Customer() { Name = "Masud", Contact = "0192837376484", City="Dhaka", Email="masud@gmail.com" }
             };
             context.Customers.AddRange(customers);
             context.SaveChanges();
