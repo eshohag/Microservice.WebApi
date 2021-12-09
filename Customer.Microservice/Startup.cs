@@ -36,7 +36,7 @@ namespace Customer.Microservice
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),  b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             services.AddScoped<DbContext, ApplicationDbContext>();
 
-            services.AddScoped<ITestManager, TestManager>();
+            services.AddScoped<ICustomerManager, CustomerManager>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             #region Swagger

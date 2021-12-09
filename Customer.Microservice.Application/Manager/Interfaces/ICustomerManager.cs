@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Customer.Microservice.Application.Manager.Interfaces
 {
-    public interface ITestManager
+    public interface ICustomerManager
     {
-        string TestMessage();
+        List<Domain.Models.Customer> GetAll();
     }
 }
