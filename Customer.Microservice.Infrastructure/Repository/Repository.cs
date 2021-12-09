@@ -13,10 +13,8 @@ namespace Customer.Microservice.Infrastructure.Repository
     public class Repository<T> : IRepository<T> where T : class
     {
         #region Members
-
         private DbContext _context;
         private bool _disposed;
-
         #endregion
 
         #region Constructor
@@ -51,7 +49,7 @@ namespace Customer.Microservice.Infrastructure.Repository
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            Attach(item); 
+            Attach(item);
             DbSet.Remove(item);
 
         }

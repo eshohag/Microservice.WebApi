@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Customer.Microservice.Infrastructure.Repository
 {
-    public interface IRepository<T> : IDisposable
-        where T : class
+    public interface IRepository<T> : IDisposable where T : class
     {
         #region LINQ QUERY
 
