@@ -8,6 +8,7 @@ using Customer.Microservice.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Customer.Microservice.Application.Manager.Interfaces;
 
 namespace Customer.Microservice.Controllers
 {

@@ -94,23 +94,6 @@ namespace Customer.Microservice.Infrastructure.Repository
 
         #endregion
 
-        #region SQL RAW QUERY
-
-        TEntity ExecuteSingleQuery<TEntity>(string sqlQuery, params object[] parameters);
-        IEnumerable<TEntity> ExecuteQuery<TEntity>(string sqlQuery, params object[] parameters);
-        int ExecuteCommand(string sqlCommand, params object[] parameters);
-        string ExecuteScalar(string sqlCommand, params object[] parameters);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sqlCommand"></param>
-        /// <param name="parameters"></param>
-        TEntity ExecuteScalar<TEntity>(string sqlCommand, params object[] parameters);
-        IEnumerable DynamicExecuteQuery(string sqlQuery, params object[] parameters);
-        dynamic DynamicFirst(string sqlQuery, params object[] parameters);
-
-        #endregion
-
         #region DATABSE TRANSACTION
 
         void Attach<TEntity>(TEntity item) where TEntity : class;
@@ -120,13 +103,6 @@ namespace Customer.Microservice.Infrastructure.Repository
         int SaveChanges();
         void CommitAndRefreshChanges();
         void RollbackChanges();
-
-        #endregion
-
-        #region Dictionary
-
-        string Create(Dictionary<string, object> model, string tableName);
-        int Update(Dictionary<string, object> model, string tableName, string where);
 
         #endregion
 
