@@ -11,13 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200718102758_Inital.cs" />
-    <Compile Remove="Migrations\20200718102758_Inital.Designer.cs" />
-    <Compile Remove="Migrations\20200718104516_Initial.cs" />
-    <Compile Remove="Migrations\20200718104516_Initial.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.12">
@@ -36,5 +29,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Customer.Microservice.Application\Customer.Microservice.Application.csproj" />
     <ProjectReference Include="..\Customer.Microservice.Domain\Customer.Microservice.Domain.csproj" />
+    <ProjectReference Include="..\Customer.Microservice.Infrastructure\Customer.Microservice.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
