@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30002.166
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customer.Microservice", "Customer.Microservice\Customer.Microservice.csproj", "{027C0464-DA8E-48C8-8F2A-69DD62C11D9D}"
 EndProject
@@ -13,7 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Server", "Auth.Server\Auth.Server.csproj", "{0C3A7B71-EB5E-4BE1-9472-E58B26EA375B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApps", "ClientApps\ClientApps.csproj", "{E8A8F63B-7541-4266-A097-83AC90AD8A11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApps", "ClientApps\ClientApps.csproj", "{E8A8F63B-7541-4266-A097-83AC90AD8A11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.Microservice.Application", "Customer.Microservice.Application\Customer.Microservice.Application.csproj", "{C6ED5BE2-1140-4B69-B381-A97C02F149B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.Microservice.Infrastructure", "Customer.Microservice.Infrastructure\Customer.Microservice.Infrastructure.csproj", "{FE68C87A-6235-4413-8F48-A909AF2BBCA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.Microservice.Domain", "Customer.Microservice.Domain\Customer.Microservice.Domain.csproj", "{9EC23944-6FCE-463B-8652-7A90A772E399}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +47,18 @@ Global
 		{E8A8F63B-7541-4266-A097-83AC90AD8A11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8A8F63B-7541-4266-A097-83AC90AD8A11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8A8F63B-7541-4266-A097-83AC90AD8A11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6ED5BE2-1140-4B69-B381-A97C02F149B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6ED5BE2-1140-4B69-B381-A97C02F149B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6ED5BE2-1140-4B69-B381-A97C02F149B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6ED5BE2-1140-4B69-B381-A97C02F149B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE68C87A-6235-4413-8F48-A909AF2BBCA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE68C87A-6235-4413-8F48-A909AF2BBCA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE68C87A-6235-4413-8F48-A909AF2BBCA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE68C87A-6235-4413-8F48-A909AF2BBCA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EC23944-6FCE-463B-8652-7A90A772E399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EC23944-6FCE-463B-8652-7A90A772E399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EC23944-6FCE-463B-8652-7A90A772E399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EC23944-6FCE-463B-8652-7A90A772E399}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +66,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{027C0464-DA8E-48C8-8F2A-69DD62C11D9D} = {C14666A9-184B-46DD-B32F-30D9A69E4FA1}
 		{FC9DFF99-990D-4FCD-8DBE-755014666B98} = {C14666A9-184B-46DD-B32F-30D9A69E4FA1}
+		{C6ED5BE2-1140-4B69-B381-A97C02F149B8} = {C14666A9-184B-46DD-B32F-30D9A69E4FA1}
+		{FE68C87A-6235-4413-8F48-A909AF2BBCA9} = {C14666A9-184B-46DD-B32F-30D9A69E4FA1}
+		{9EC23944-6FCE-463B-8652-7A90A772E399} = {C14666A9-184B-46DD-B32F-30D9A69E4FA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {01E9333D-C860-4DAE-93B3-911359E3738A}

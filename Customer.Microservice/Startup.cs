@@ -2,7 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Customer.Microservice.Data;
+using Customer.Microservice.Application.Manager.Implementation;
+using Customer.Microservice.Application.Manager.Interfaces;
+using Customer.Microservice.Infrastructure;
+using Customer.Microservice.Infrastructure.Repository;
+using Customer.Microservice.Infrastructure.Repository.Implementation;
+using Customer.Microservice.Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,10 +33,12 @@ namespace Customer.Microservice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection"),
-                   b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),  b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+            services.AddScoped<DbContext, ApplicationDbContext>();
+
+            services.AddScoped<ICustomerManager, CustomerManager>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+
             #region Swagger
             services.AddSwaggerGen(c =>
             {
@@ -76,10 +83,10 @@ namespace Customer.Microservice
         private void CreateInitialTestCustomers(ApplicationDbContext context)
         {
             // add hardcoded test user to db on startup
-            var customers = new List<Entities.Customer>() {
-                new Entities.Customer() { Name = "Shohag", Contact = "0192837376484", City="Dhaka", Email="shohag@gmail.com" },
-                new Entities.Customer() { Name = "Arif", Contact = "0192837376484", City="Dhaka", Email="arif@gmail.com" },
-                new Entities.Customer() { Name = "Masud", Contact = "0192837376484", City="Dhaka", Email="masud@gmail.com" }
+            var customers = new List<Domain.Models.Customer>() {
+                new Domain.Models.Customer() { Name = "Shohag", Contact = "0192837376484", City="Dhaka", Email="shohag@gmail.com" },
+                new Domain.Models.Customer() { Name = "Arif", Contact = "0192837376484", City="Dhaka", Email="arif@gmail.com" },
+                new Domain.Models.Customer() { Name = "Masud", Contact = "0192837376484", City="Dhaka", Email="masud@gmail.com" }
             };
             context.Customers.AddRange(customers);
             context.SaveChanges();
