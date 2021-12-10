@@ -8,4 +8,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Customer.Microservice.Infrastructure\Customer.Microservice.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

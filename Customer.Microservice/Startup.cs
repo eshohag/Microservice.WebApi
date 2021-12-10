@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Customer.Microservice.Application;
 using Customer.Microservice.Application.Manager.Implementation;
 using Customer.Microservice.Application.Manager.Interfaces;
-using Customer.Microservice.Data;
+using Customer.Microservice.Infrastructure;
+using Customer.Microservice.Infrastructure.Repository;
+using Customer.Microservice.Infrastructure.Repository.Implementation;
+using Customer.Microservice.Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,13 +33,12 @@ namespace Customer.Microservice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection"),
-                   b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
-           
-            services.AddScoped<ITestManager, TestManager>();
-                   
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),  b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+            services.AddScoped<DbContext, ApplicationDbContext>();
+
+            services.AddScoped<ICustomerManager, CustomerManager>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+
             #region Swagger
             services.AddSwaggerGen(c =>
             {
