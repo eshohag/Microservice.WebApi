@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Customer.Microservice.Application;
-using Customer.Microservice.Domain.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Customer.Microservice.Application.Manager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Customer.Microservice.Application.Manager.Interfaces;
-using Customer.Microservice.Infrastructure.Repository.Interfaces;
 
 namespace Customer.Microservice.Controllers
 {
@@ -24,7 +15,7 @@ namespace Customer.Microservice.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
             var customers = _customerManager.GetAll();
             if (customers == null) return NotFound();

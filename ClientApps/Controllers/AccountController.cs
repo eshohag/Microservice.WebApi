@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -36,9 +34,9 @@ namespace ClientApps.Controllers
         {
             if (ModelState.IsValid)
             {
-                var authResponse = JsonDataHelper.GetJsonResponseData(model: new { userName = model.UserName, password = model.Password }, url: "https://localhost:44382/gateway/users/authenticate", WebRequestMethods.Http.Post);
+                var user = await HttpClientHelper.PostAsync<AuthenticateResponse>(model: new { userName = model.UserName, password = model.Password }, url: "https://localhost:44382/gateway/users/authenticate");
 
-                if (authResponse == null)
+                if (user == null)
                 {
                     //Add logic here to display some message to user
                     ViewBag.Message = "Username or password is incorrect!";
@@ -46,8 +44,6 @@ namespace ClientApps.Controllers
                 }
                 else
                 {
-                    var user = JsonConvert.DeserializeObject<AuthenticateResponse>(authResponse);
-
                     //A claim is a statement about a subject by an issuer and
                     //represent attributes of the subject that are useful in the context of authentication and authorization operations.
                     var claims = new List<Claim>() {
