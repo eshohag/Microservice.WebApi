@@ -1,23 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Customer.Microservice.Application.Manager.Implementation;
 using Customer.Microservice.Application.Manager.Interfaces;
 using Customer.Microservice.Infrastructure;
-using Customer.Microservice.Infrastructure.Repository;
 using Customer.Microservice.Infrastructure.Repository.Implementation;
 using Customer.Microservice.Infrastructure.Repository.Interfaces;
+using Customer.Microservice.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Customer.Microservice
 {
@@ -33,7 +29,7 @@ namespace Customer.Microservice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),  b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             services.AddScoped<DbContext, ApplicationDbContext>();
 
             services.AddScoped<ICustomerManager, CustomerManager>();
@@ -51,6 +47,15 @@ namespace Customer.Microservice
             });
             #endregion
             services.AddControllers();
+
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IUriService>(o =>
+            {
+                var accessor = o.GetRequiredService<IHttpContextAccessor>();
+                var request = accessor.HttpContext.Request;
+                var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+                return new UriService(uri);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
